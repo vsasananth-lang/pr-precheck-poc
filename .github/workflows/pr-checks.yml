@@ -1,0 +1,30 @@
+name: PR Pre-Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  pre-checks:
+    name: Pre-Check Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Run Go Format Check
+        run: gofmt -l .
+
+      - name: Run Unit Tests
+        run: go test ./...
+
+      - name: Build Application
+        run: go build ./...
