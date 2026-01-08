@@ -21,7 +21,13 @@ jobs:
           go-version: '1.22'
 
       - name: Run Go Format Check
-        run: gofmt -l .
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "The following files are not formatted:"
+            echo "$unformatted"
+            exit 1
+          fi
 
       - name: Run Unit Tests
         run: go test ./...
